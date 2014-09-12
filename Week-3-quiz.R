@@ -89,7 +89,6 @@ func5(5, 7)
 # files as data frames and then merge them by the ModelNumber key. 
 # Leave the “all” parameters as their defaults. How many observations 
 # end up in the result? Is this what you would have expected?
-
 price <- read.table(file = "C:/Users/MattM/Downloads/week-3-price-data.csv", header = TRUE, sep = ",")
 model <- read.table(file = "C:/Users/MattM/Downloads/week-3-make-model-data.csv", header = TRUE, sep = ",")
 # IMPORTANT: needed to include header = TRUE for merge to work properly
@@ -97,11 +96,11 @@ model <- read.table(file = "C:/Users/MattM/Downloads/week-3-make-model-data.csv"
 # class(model)
 pm6 <- merge(x = price, y = model, by.x = "ModelNumber", by.y = "ModelNumber")
 # would have expected 28 (if all overlapped) or up to 36 (if no overlaps)
-# but we see in the next problem that we would need to set all = TRUE for this
+#    but we see in the next problem that we would need to set all = TRUE for this
 # only returned the rows that overlapped (union?)
 # I see that ID 12 is missing - it seems to have a typo with an extra 0
-# on the end of it's ModelNumber
-# 
+#    on the end of it's ModelNumber
+
 
 #### Prob 7 ####
 # 7. Use the data sets from the previous question, but this time 
@@ -137,7 +136,7 @@ func11 <- function(v11)
 }
 func11(c("abc", "aaaaaa", "b", "1234"))
 # is it requested that some error handling be implemented such that a non character
-# vector is converted into a character vector?
+#    vector is converted into a character vector?
 
 #### Prob 12 ####
 # 12. Write a function that takes two character vectors of equal length 
@@ -157,10 +156,10 @@ func12(c("abc", "aaaaaa", "b", "1234"), c("abc", "aaaaaa", "b", "1234"))
 # Ch 13.1 in "R for Everone" explains paste()
 # https://stat.ethz.ch/R-manual/R-patched/library/base/html/paste.html
 # Without error handling:
-# Using either function, if the vectors are not the same length then the shorter
-# vector is recycled starting from the beginning of the vector
+#    Using either function, if the vectors are not the same length then the shorter
+#    vector is recycled starting from the beginning of the vector
 # stop() function provided by Brett Burk in Discussion Board:
-# Forum: Week 3 Assignments > Thread: Week 3 Quiz Question 12...dying gracefully
+#    Forum: Week 3 Assignments > Thread: Week 3 Quiz Question 12...dying gracefully
 
 #### Prob 13 ####
 # 13. Write a function that takes a character vector and returns the 
@@ -171,11 +170,21 @@ func13 <- function(v13)
 #    require(stringr) 
 #    I just attached stringr by checking the box in Rstudio instead
     v13temp <- v13[str_detect(string = v13, pattern = "A|a|E|e|I|i|O|o|U|u")]
-#     str_extract(string = v13temp, "[A|a|E|e|I|i|O|o|U|u][][]")
+    if(length(v13temp) == 0)
+    {
+        stop("This vector does not contain any strings that meet requirements")
+    }
+    str_extract(string = v13temp, "[A|a|E|e|I|i|O|o|U|u][^\n][^\n]")
 }
-func13(c("abc", "aaaaaa", "b", "1234", "bbb"))
-# can return the strings that have a vowel in them
-# but need to extract the 1st vowel + 2 more characters for each string
+func13(c("abc", "bbbbbb", "b", "1234", "bbb"))
+# only returns those strings that qualify and ignores all others
+#    this might not be the most graceful as the user might lose some information
+# if function finds a vowel but not enough character follow it then
+#    it will return an NA
+# the 2 characters that follow the vowel must not be carriage returns
+#    there's probably a better way to implement this part
+# stop() function provided by Brett Burk in Discussion Board:
+#    Forum: Week 3 Assignments > Thread: Week 3 Quiz Question 12...dying gracefully
 
 #### Prob 14 ####
 # 14. Suppose you have a data frame where one column gives the month 
@@ -200,7 +209,7 @@ as.Date("09-11-2014", format = "%m-%d-%Y")
 # 16. Illustrate the code necessary to take a date and extract the month of the date.
 as.numeric(format(as.Date("09-11-2014", format = "%m-%d-%Y"), "%m"))
 # alternative is to use the month() function in the lubridate package:
-# month(as.Date("09-11-2014", format = "%m-%d-%Y"))
+#    month(as.Date("09-11-2014", format = "%m-%d-%Y"))
 # Date Processing in Ch.2 of "Data Manipulation with R"
 
 #### Prob 17 ####
@@ -208,5 +217,5 @@ as.numeric(format(as.Date("09-11-2014", format = "%m-%d-%Y"), "%m"))
 # dates17 <- as.Date(c(as.Date("2005-01-01"):as.Date("2014-12-31")), origin = "2005-01-01")
 dates17 <- as.Date(c(1:(10 * 365 + 2 - 1)), origin = "2005-01-01")
 # added 2 days for 2 leap days that would occur within 10 years and subtracted 1 to take off
-# the 1st day of 2015
+#    the 1st day of 2015
 # seems like there's a more elegant way to implement this
