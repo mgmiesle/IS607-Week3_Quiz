@@ -136,24 +136,31 @@ func11 <- function(v11)
     nchar(v11)
 }
 func11(c("abc", "aaaaaa", "b", "1234"))
+# is it requested that some error handling be implemented such that a non character
+# vector is converted into a character vector?
 
 #### Prob 12 ####
 # 12. Write a function that takes two character vectors of equal length 
 # and concatenates them element by element with a space as the separator. 
-# Have the function die gracefully if the vectors are the same length.
+# Have the function die gracefully if the vectors are NOT the same length.
 func12 <- function(v121, v122)
 {
+    if(length(v121) != length(v122))
+    {
+        stop("vectors are not the same length so this function will not operate")
+    }
     str_c(v121, v122, sep = " ")
 }
-func12(c("abc", "aaaaaa", "b", "1234", "bbb"), c("abc", "aaaaaa", "b", "1234"))
+func12(c("abc", "aaaaaa", "b", "1234"), c("abc", "aaaaaa", "b", "1234"))
 # character manipulation section in Ch.2 of "Data Manipulation with R"
 #    paste() and str_c() introduced here
 # Ch 13.1 in "R for Everone" explains paste()
 # https://stat.ethz.ch/R-manual/R-patched/library/base/html/paste.html
-# Unsure what the last line of instruction is.  should it be "if the vectors are NOT
-# the same length"?
+# Without error handling:
 # Using either function, if the vectors are not the same length then the shorter
 # vector is recycled starting from the beginning of the vector
+# stop() function provided by Brett Burk in Discussion Board:
+# Forum: Week 3 Assignments > Thread: Week 3 Quiz Question 12...dying gracefully
 
 #### Prob 13 ####
 # 13. Write a function that takes a character vector and returns the 
